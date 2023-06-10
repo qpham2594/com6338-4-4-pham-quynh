@@ -12,9 +12,6 @@ var words = [
   'mango'
 ]
 
-// Pseudocode
-
-
 // Make variables for elements using getElementById
 
 let correctGuesses = []
@@ -38,9 +35,7 @@ var currentWord = words[Math.floor(Math.random() * words.length)];      // picki
 var tempCurrentWord = currentWord
 var hiddenWord = Array(currentWord.length + 1).join('_');
 
-wordToGuess.innerHTML = hiddenWord
-
-
+wordToGuess.textContent = hiddenWord
 
 
 document.onkeyup = function(e)                  // Have program register key presses
@@ -50,7 +45,7 @@ document.onkeyup = function(e)                  // Have program register key pre
 
   var letterRegex = /^[a-z]$/;
 
-  if (!letterRegex.test(key) || incorrectGuesses.includes(key)) {
+  if (!letterRegex.test(key) || guessedLetters.includes(key)) {
     return;
   };
 
@@ -63,7 +58,7 @@ document.onkeyup = function(e)                  // Have program register key pre
 
      for (let i = 0; i < currentWord.length; i++) {
        if (currentWord[i] === key) {
-         currentWordLetters[i] = '_';
+         //currentWordLetters[i] = '_';
          hiddenWordLetters[i] = key;
        }
      }    
@@ -71,14 +66,12 @@ document.onkeyup = function(e)                  // Have program register key pre
     hiddenWord = hiddenWordLetters.join('')
     currentWord = currentWordLetters.join('')
 
-    wordToGuess.innerHTML = hiddenWord
+    wordToGuess.textContent = hiddenWord
 
     if (tempCurrentWord === hiddenWord) {
       wins.innerText++
       reset()
     }
-
-  console.log(currentWord)
 
   } else {
 
@@ -100,6 +93,7 @@ function reset() {
   wordToGuess.innerText = hiddenWord
   remainingGuess.textContent = maxGuesses;
   incorrectGuesses = [];
+  guessedLetters = [];
   incorrectLetters.textContent = "";
 }
 
