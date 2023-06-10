@@ -14,6 +14,7 @@ var words = [
 
 // Pseudocode
 
+
 // Make variables for elements using getElementById
 
 let correctGuesses = []
@@ -22,7 +23,7 @@ let guessedLetters = []
 
 var maxGuesses = 10
 var wins = 0
-var loss = 0
+var losses = 0
 
 var wordToGuess = document.getElementById('word-to-guess')
 var remainingGuess = document.getElementById('remaining-guesses')
@@ -39,11 +40,17 @@ var hiddenWord = Array(currentWord.length + 1).join('_');
 
 wordToGuess.innerHTML = hiddenWord
 
+
+
+
 document.onkeyup = function(e)                  // Have program register key presses
 {
   var key = e.key.toLowerCase()   // filtering keypresses
+  console.log(currentWord)
 
-  if (key.length > 1 || incorrectGuesses.includes(key)) {
+  var letterRegex = /^[a-z]$/;
+
+  if (!letterRegex.test(key) || incorrectGuesses.includes(key)) {
     return;
   };
 
@@ -54,10 +61,12 @@ document.onkeyup = function(e)                  // Have program register key pre
     let hiddenWordLetters = hiddenWord.split('')
     let currentWordLetters = currentWord.split('')
 
-    let indexOfCorrectGuessedLetter = currentWord.indexOf(key)
-
-    currentWordLetters[indexOfCorrectGuessedLetter] = '_'
-    hiddenWordLetters[indexOfCorrectGuessedLetter] = key
+     for (let i = 0; i < currentWord.length; i++) {
+       if (currentWord[i] === key) {
+         currentWordLetters[i] = '_';
+         hiddenWordLetters[i] = key;
+       }
+     }    
 
     hiddenWord = hiddenWordLetters.join('')
     currentWord = currentWordLetters.join('')
@@ -68,10 +77,13 @@ document.onkeyup = function(e)                  // Have program register key pre
       wins.innerText++
       reset()
     }
+
+  console.log(currentWord)
+
   } else {
 
     incorrectGuesses.push(key)
-    incorrectLetters.textContent = incorrectGuesses.join('');
+    incorrectLetters.textContent = incorrectGuesses.join(', ');
     remainingGuess.textContent--;
 
     if (remainingGuess.textContent == 0) {
